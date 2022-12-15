@@ -1,5 +1,6 @@
 <script>
     import { echarts } from "../echarts";
+    
     export let file
     export let municipio
     let datas = []
@@ -13,9 +14,9 @@
         valuesColetivo.push(element.valueAgentColetivo)
         valuesLocais.push(element.valueLocais)
     }    
-    console.log(values)
-    console.log(datas)
-    console.log(valuesLocais)
+    //console.log(values)
+    //console.log(datas)
+    //console.log(valuesLocais)
     const option = {
   title: {
     text: "comparativo municipios semelhantes",

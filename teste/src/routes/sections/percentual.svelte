@@ -13,7 +13,7 @@
     let porcentagemApi = ((populacaoLocalApi/populacaoTotalApi)*100).toFixed(2)
     let option = {
       title :{
-        text: "% populacao "+ nome +" x  participação de "+nome,
+        text: " % participação de "+ nome +" x % populacao de"+nome,
         left: "center",
         textStyle : {
           fontSize : "auto"
@@ -27,7 +27,7 @@
       },
   xAxis: {
     type: 'category',
-    data: ['populacao', 'participação']
+    data: ['% participação','% populacao']
   },
   yAxis: {
     type: 'value'
@@ -35,13 +35,14 @@
   series: [
     {
       data: [
-        porcentagem,
         {
           value: porcentagemApi,
           itemStyle: {
             color: '#a90000'
           }
         },
+        porcentagem,
+        
       ],
       type: 'bar'
     }
@@ -59,7 +60,7 @@
     padding: 15px 15px 0px 15px;
     background-color: white;
     border-radius: 15px;
-    margin-left: 20px;
+    margin-left: 5px;
     margin-right: 5px;
 	}
 </style>

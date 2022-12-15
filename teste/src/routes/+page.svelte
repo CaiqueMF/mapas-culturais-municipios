@@ -1,9 +1,11 @@
 <script>
 	import { echarts } from './echarts';
-	import TesteMunicipio from './testeMunicipio.svelte';
+	import TesteMunicipio from './TesteMunicipio.svelte';
+	
+
+	
 	let municipio="QUIXADÁ"
 
-	$: console.log(municipio)
 </script>
 <div class="container" style="display: flex;">
 	<div class="header">

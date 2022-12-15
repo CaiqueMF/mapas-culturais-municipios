@@ -1,7 +1,19 @@
 <script>
-    import Comparativo from "./sections/comparativo.svelte";
-    import Percentual from "./sections/percentual.svelte";
-    export let municipio
+    import Comparativo from "./sections/Comparativo.svelte";
+    import Percentual from "./sections/Percentual.svelte";
+	import { acharSemelhantes } from "./sections/scripts/AcharSemelhantes";
+    /**
+	 * @type {string}
+	 */
+     export let municipio
+
+
+     /**
+	 * @type {string | any[]}
+	 */
+     let semelhantes
+
+    $: semelhantes = acharSemelhantes(municipio)
     /**
 	 * @type {{ name: string; valueAgentIndividual: number; valueAgentColetivo: number; valueLocais: number; }[]}
 	 */
@@ -53,33 +65,18 @@
 </script>
 <div style="display: block;">
     <div class="organize">
-        <div>
-            <Percentual populacaoTotal = 920008 populacaoLocal = 88899 populacaoTotalApi= 1930 populacaoLocalApi = {muni.valueAgentIndividual} nome = {muni.name}></Percentual>
-            <div class="organize">
-                <div class="similar">
-                    <h2>municipios semelhantes para comparação (<span>17%</span>)</h2>
-                    <ul>
-                        <li>CANINDÉ</li>
-                        <li>PACAJUS</li>
-                        <li>CRATEÚS</li>
-                        <li>RUSSAS</li>
-                        <li>PACATUBA</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
         <div class="organize2">
             <div class="organize">
                 <div class="info">
-                    <h1>numero de agentes individuais</h1>
+                    <h1>número de agentes individuais</h1>
                     <h3>{muni.valueAgentIndividual}</h3>
                 </div>
                 <div class="info">
-                    <h1>numero de agentes coletivos</h1>
+                    <h1>número de agentes coletivos</h1>
                     <h3>{muni.valueAgentColetivo}</h3>
                 </div>
                 <div class="info">
-                    <h1>numero de locais</h1>
+                    <h1>número de locais</h1>
                     <h3>{muni.valueLocais}</h3>
                 </div>
             </div>
@@ -87,14 +84,33 @@
                 <Comparativo file = {tudo} municipio = {muni}></Comparativo>
             </div>
         </div>
+        <div class="percentualESimilar">
+            <Percentual populacaoTotal = 920008 populacaoLocal = 88899 populacaoTotalApi= 1930 populacaoLocalApi = {muni.valueAgentIndividual} nome = {muni.name}></Percentual>
+            <div class="organize">
+                <div class="similar">
+                    <h2>municipios semelhantes para comparação (<span>{semelhantes[semelhantes.length-1]}</span>)</h2>
+                    <ul>
+                        {#each semelhantes as individuais,i}
+                            {#if (i<semelhantes.length-1)}
+                                <li>{individuais}</li>
+                            {/if}  
+                        {/each}
+                    </ul>
+                </div>
+            </div>
+        </div>
         
     </div>
     
 </div>
 <style>
+    .percentualESimilar{
+        margin-left: 5px;
+    }
     .organize{
         display: flex;
         flex-direction: row;
+        margin-left: 5px;
     }
 
     .info{
@@ -127,7 +143,7 @@
         border-radius: 15px;
         margin-top: 15px;
         margin-bottom: 30px;
-        margin-left: 15px;
+        margin-left: 5px;
         margin-right: 5px;
     }
 
