@@ -1,10 +1,20 @@
 <script>
 	import { echarts } from './echarts';
+	import { acharporcentagens } from './sections/scripts/AcharPorcentagens';
+	import { numeroDadosLocal } from './sections/scripts/PuxarDados';
 	import TesteMunicipio from './TesteMunicipio.svelte';
-	
 
 	
+	
 	let municipio="QUIXADÁ"
+
+	$:numeroDadosLocal(municipio).then((response)=>{
+		console.log(response)
+	})
+	$:acharporcentagens(municipio).then((Response)=>{
+		console.log(Response)
+	})
+	
 
 </script>
 <div class="container" style="display: flex;">
