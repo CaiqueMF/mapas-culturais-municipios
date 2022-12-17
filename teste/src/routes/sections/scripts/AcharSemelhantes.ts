@@ -55,7 +55,9 @@ function acharSemelhantes(municipio : string){
           }
           ambos = getCommon(municipiosPopulacao,municipiosPib)
           ambos.splice(ambos.indexOf(municipio),1)
+          
       }
+      ambos = ambos.slice(0,5)
       ambos.push(tolerance.toFixed(2).toString())
       return ambos
   }

@@ -1,23 +1,35 @@
 <script>
-    import { echarts } from "../echarts";
-    
-    export let file
-    export let municipio
-    let datas = []
-    let values = []
-    let valuesColetivo = []
-    let valuesLocais = []
-    for (const key in file) {
-        const element = file[key];
-        datas.push(element.name)
-        values.push(element.valueAgentIndividual)
-        valuesColetivo.push(element.valueAgentColetivo)
-        valuesLocais.push(element.valueLocais)
-    }    
+// @ts-nocheck
+
+
+
+   
+    import { Chart } from 'svelte-echarts'
+	import { numeroDadosMuni } from './scripts/PuxarDados';
+  import { numerosSemelhantes } from './scripts/PuxarDados';
+     export let dadosMunicipio
+     export let municipio
+     export let semelhantes
+    let valoresIndividuais = new Array(semelhantes.length-1).fill(0)
+    let ValoresColetivos = new Array(semelhantes.length-1).fill(0)
+    let ValoresLocais = new Array(semelhantes.length-1).fill(0)
     //console.log(values)
     //console.log(datas)
     //console.log(valuesLocais)
-    const option = {
+    let options
+    $: numerosSemelhantes(semelhantes.slice(0,-1)).then((Response)=>{
+      let i = 0
+      for(const resposta of Response){
+        valoresIndividuais[i]=resposta[0]
+        ValoresColetivos[i]=resposta[1]
+        ValoresLocais[i]=resposta[2]
+        i = i+1;
+      }
+    })
+    let titulos
+    $:titulos = [...semelhantes.slice(0,-1),municipio]
+    $:console.log(titulos)
+    $: options = {
   title: {
     text: "comparativo municipios semelhantes",
     left: "center"
@@ -25,7 +37,10 @@
   xAxis: {
     type: 'category',
     inverse: true,
-    data: [...datas,municipio.name]
+    data: titulos,
+    axisLabel : {
+      interval: 0
+    }
   },
   yAxis: {
     type: 'value'
@@ -43,8 +58,8 @@
   series: [
     {
       name: "agentes individuais",
-      data: [...values,{
-        value: municipio.valueAgentIndividual,
+      data: [...valoresIndividuais,{
+        value: dadosMunicipio[0],
         itemStyle: {
             color: '#005eaa'
           }
@@ -53,8 +68,8 @@
     },
     {
       name: "agentes coletivos",
-      data: [...valuesColetivo,{
-        value:municipio.valueAgentColetivo,
+      data: [...ValoresColetivos,{
+        value:dadosMunicipio[1],
         itemStyle: {
             color: '#2b821d'
           }
@@ -64,8 +79,8 @@
     },
     {
       name: "espaços",
-      data: [...valuesLocais,{
-        value:municipio.valueLocais,
+      data: [...ValoresLocais,{
+        value:dadosMunicipio[2],
         itemStyle: {
             color: '#e6b600'
           }
@@ -77,14 +92,16 @@
 
 </script>
 
-<div class="container" use:echarts={option} />
+<div class="container">
+  <Chart {options} />
+</div>
 
 <style>
 	.container {
     padding: 0;
     margin-top: 5px;
-		min-width: 1150px;
-		min-height: 575px;
+		width: 1150px;
+		height: 575px;
     padding-top: 10px;
     padding-left: 30px;
     margin-left: 5px;

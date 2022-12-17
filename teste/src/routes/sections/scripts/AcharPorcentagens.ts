@@ -1,7 +1,7 @@
 import { MESO } from "./CONSTANTS/MESO"
 import { MICRO } from "./CONSTANTS/MICRO"
 import { POPULACAO } from "./CONSTANTS/POPULACAO"
-import { numeroDadosLocal } from "./PuxarDados"
+import { numeroDadosMeso, numeroDadosMuni } from "./PuxarDados"
 
 async function acharporcentagens(municipio:string){
     let porcentagemPop = POPULACAO.get(municipio)
@@ -28,14 +28,14 @@ async function acharporcentagens(municipio:string){
     
 
     let populacaoApi =1
-    const p1 = numeroDadosLocal(municipio)
+    const p1 = numeroDadosMuni(municipio)
     let populacaoTotalApi=1
-    const p2 = numeroDadosLocal(meso)
+    const p2 = numeroDadosMeso(meso)
     const data = await Promise.all([p1,p2])
     populacaoApi = data[0][0]
     populacaoTotalApi = data[1][0]
     populacaoApi = populacaoApi/populacaoTotalApi
-    return [porcentagemPop,populacaoApi]
+    return [populacaoApi*100,porcentagemPop*100]
 }
 
 

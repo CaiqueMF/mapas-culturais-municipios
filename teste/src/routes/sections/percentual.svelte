@@ -1,19 +1,25 @@
 <script>
-    import { echarts } from "../echarts";
-    export let populacaoTotal;
-    export let populacaoLocal;
-    export let populacaoTotalApi
-    export let populacaoLocalApi
+// @ts-nocheck
+
+
+
+
+
+    import { Chart } from 'svelte-echarts'
+	  import { acharporcentagens } from './scripts/AcharPorcentagens';
+
+
     /**
 	 * @type {string}
 	 */
-     export let nome
+     export let municipio
+    
 
-    let porcentagem = ((populacaoLocal/populacaoTotal)*100).toFixed(2)
-    let porcentagemApi = ((populacaoLocalApi/populacaoTotalApi)*100).toFixed(2)
-    let option = {
+    let dados = [0,0]
+    let options
+    $: options = {
       title :{
-        text: " % participação de "+ nome +" x % populacao de"+nome,
+        text: " % participação de "+ municipio +" x % populacao de "+municipio,
         left: "center",
         textStyle : {
           fontSize : "auto"
@@ -25,38 +31,50 @@
       type: 'shadow',
     }
       },
-  xAxis: {
+    xAxis: {
     type: 'category',
     data: ['% participação','% populacao']
-  },
-  yAxis: {
+    },
+    yAxis: {
     type: 'value'
-  },
-  series: [
+    },
+    series: [
     {
       data: [
         {
-          value: porcentagemApi,
+          value: dados[0].toFixed(2),
           itemStyle: {
             color: '#a90000'
           }
         },
-        porcentagem,
+        dados[1].toFixed(2),
         
       ],
       type: 'bar'
     }
   ]
 };
+
+    $: acharporcentagens(municipio).then((Response)=>{
+    
+    dados = Response
+
+	  })
+    
+
+     
 </script>
 
-<div class="container" use:echarts={option} />
+<div class="container">
+  
+  <Chart {options} />
+</div>
 
 <style>
 	.container {
     margin-top: 15px;
-		min-width: 500px;
-		min-height: 500px;
+		width: 500px;
+		height: 500px;
     padding: 15px 15px 0px 15px;
     background-color: white;
     border-radius: 15px;

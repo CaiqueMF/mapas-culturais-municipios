@@ -1,27 +1,28 @@
 <script>
-	import { echarts } from './echarts';
 	import { acharporcentagens } from './sections/scripts/AcharPorcentagens';
-	import { numeroDadosLocal } from './sections/scripts/PuxarDados';
-	import TesteMunicipio from './TesteMunicipio.svelte';
+	import { numeroDadosMeso, numeroDadosMuni } from './sections/scripts/PuxarDados';
+	import TesteMunicipio from './sections/TesteMunicipio.svelte';
 
 	
 	
-	let municipio="QUIXADÁ"
-
-	$:numeroDadosLocal(municipio).then((response)=>{
-		console.log(response)
-	})
-	$:acharporcentagens(municipio).then((Response)=>{
-		console.log(Response)
-	})
+	let municipio="CASCAVEL"
+	let valorMuncipio = municipio
+	//$:acharporcentagens(municipio).then((Response)=>{
+	//	console.log(Response)
+	//})
+	
+	
 	
 
 </script>
 <div class="container" style="display: flex;">
+	<button on:click={()=>{
+		valorMuncipio = municipio
+	}}> mudar valor </button>
 	<div class="header">
 		<input bind:value={municipio}>
 	</div>
-    <TesteMunicipio {municipio}></TesteMunicipio>
+    <TesteMunicipio municipio={valorMuncipio}></TesteMunicipio>
 </div>
 
 <style>
