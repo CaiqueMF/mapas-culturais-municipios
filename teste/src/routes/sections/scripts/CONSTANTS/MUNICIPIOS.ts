@@ -1,4 +1,4 @@
-const MUNICIPIOS = new Set()
+const MUNICIPIOS = new Set<string>()
 
 MUNICIPIOS.add('BELA CRUZ');
 MUNICIPIOS.add('CANINDÉ');

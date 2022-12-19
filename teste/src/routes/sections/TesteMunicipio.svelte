@@ -52,7 +52,7 @@
             <Percentual {municipio}></Percentual>
             <div class="organize">
                 <div class="similar">
-                    <h2>municipios semelhantes para comparação (<span>{semelhantes[semelhantes.length-1]}</span>)</h2>
+                    <h2>municipios semelhantes para comparação <span title="aproximação feita com tolerância de {+semelhantes[semelhantes.length-1]*100}%">*</span></h2>
                     <ul>
                         {#each semelhantes as individuais,i}
                             {#if (i<semelhantes.length-1)}
@@ -68,6 +68,7 @@
     
 </div>
 <style>
+    
     .percentualESimilar{
         margin-left: 5px;
     }
@@ -101,7 +102,7 @@
         align-items: center;
     }
     .similar {
-        min-width: 535px;
+        min-width: 530px;
         align-items: center;
         background-color: white;
         border-radius: 15px;
