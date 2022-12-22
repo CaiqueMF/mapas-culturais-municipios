@@ -5,6 +5,7 @@
 	import Pesquisa from './sections/Pesquisa.svelte';
 	import { MUNICIPIOS } from './sections/scripts/CONSTANTS/MUNICIPIOS';
 	import { prevent_default } from 'svelte/internal';
+	import TesteEstado from './sections/TesteEstado.svelte';
 
 
 
@@ -26,13 +27,17 @@
 			if(muni.toLowerCase().startsWith(municipio.toLowerCase())){
 				guardarDado = [...guardarDado,makeMatchBold(muni)]
 			}
+			
 		})
+		if("ESTADO".toLowerCase().startsWith(municipio.toLowerCase())){
+				guardarDado = [...guardarDado,makeMatchBold("ESTADO")]
+			}
 		}
 		municipiosFiltrados = guardarDado
 	}
 
 	//entrada padrão
-	let municipio="BEBERIBE"
+	let municipio="FORTALEZA"
 	let valorMuncipio = municipio
 	/**
 	 * @type {number}
@@ -125,7 +130,11 @@
 			{/if}
 		</form>
 	</div>
-    <TesteMunicipio municipio={valorMuncipio}></TesteMunicipio>
+	{#if valorMuncipio!=="ESTADO"}
+    	<TesteMunicipio municipio={valorMuncipio}></TesteMunicipio>
+	{:else if valorMuncipio==="ESTADO"}
+		<TesteEstado/>
+	{/if}
 </div>
 
 <style>
