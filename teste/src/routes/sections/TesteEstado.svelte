@@ -6,7 +6,6 @@ import { element } from "svelte/internal";
 	import { dadosBrutosEstado, todosDadosEstado } from "./scripts/PuxarDados";
 
     
-    
     /**
 	 * @type {number[]}
 	 */
@@ -112,26 +111,27 @@ import { element } from "svelte/internal";
     .container {
     padding: 0;
     margin-top: 5px;
-	width: 1720px;
-	height: 600px;
+	  width: 1550px;
+	  height: 600px;
     padding-top: 10px;
-    padding-left: 80px;
-    padding-right: 80px;
+    padding-left: 90px;
+    padding-right: 90px;
+    padding-bottom: 30px;
     margin-left: 10px;
     background-color: white;
     border-radius: 15px;
     margin-bottom: 20px;
-    padding-bottom: 5px;
+
 	}
     .organize{
         display: flex;
         flex-direction: row;
         margin-left: 5px;
         margin-right: 5px;
-        justify-content: space-between;
+        
     }
     .info{
-        min-width: 600px;
+        min-width: 550px;
         background-color: white;
         padding: 10px;
         margin: 15px 5px 5px 5px;

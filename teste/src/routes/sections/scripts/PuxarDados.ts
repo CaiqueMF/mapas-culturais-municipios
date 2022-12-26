@@ -1,4 +1,5 @@
 import axios from "axios"
+import { number } from "echarts"
 import { element } from "svelte/internal"
 import { MUNICIPIOS } from "./CONSTANTS/MUNICIPIOS"
 
@@ -38,6 +39,69 @@ async function numeroDadosMuni(lugar : string){
     return final
 }
 
+async function interessesMuni(municipio:string, tipo : string) {
+    const p1 = axios.get('https://mapacultural.secult.ce.gov.br/api/'+tipo+'/find', {params:{
+        '@select' : 'terms',
+        'geoMunicipio' : 'EQ('+municipio+')'
+    }})
+    let dados = await p1
+    let mapaInteresses = new Map <String,number>() 
+    dados.data.forEach((dado: any) =>{
+        let atual = dado.terms.area
+        atual.forEach((interesseAtual: String) =>{
+            let valor : number
+            if(mapaInteresses.get(interesseAtual)!==undefined){
+                valor = mapaInteresses.get(interesseAtual)!
+                mapaInteresses.set(interesseAtual, valor+1)
+            }else{
+                mapaInteresses.set(interesseAtual,1)
+            }
+        })
+    })
+    return mapaInteresses
+}
+async function tratarDadosInteresse(lugar :string, tipo: string) {
+    let mapa = new Map <String,number>()
+    if(lugar!=="ESTADO"){
+        mapa = await interessesMuni(lugar,tipo)
+    }else{
+        //depois tenho que ver como vou fazer o request pra estado, os testes estão dando errado
+    }
+    let dados = Array.from(mapa, ([name, value]) => ({ name, value}));
+    dados.sort((a,b)=>b.value-a.value)
+    //tamano total pra calculo de perocentagem
+    /* let total = 0
+    dados.forEach(dado=>{
+        total = total + dado.value
+    })
+    let outros = {
+        name: 'Outros (menos de 1%):',
+        value: 0
+    }
+    let quantidade = 0;
+    dados.forEach((dado,index,objeto)=>{
+        if(dado.value/total<0.01){
+            if(quantidade < 5){
+                outros.name=outros.name + "\n -"+dado.name
+                quantidade++
+            }else if(quantidade == 5){
+                outros.name=outros.name+" ..."
+                quantidade++
+            }
+            
+            outros.value=outros.value+dado.value
+            objeto.splice(index,1)
+        }
+    })
+    if(quantidade!=0){
+        dados.push(outros)
+    }
+ */
+    
+
+    return dados
+
+}
 async function numerosDadosEstado(){
     const final : number[] = []
         const p1 = axios.get('https://mapacultural.secult.ce.gov.br/api/agent/find',{params:{
@@ -173,4 +237,4 @@ async function todosDadosEstado() {
     let resultado = await Promise.all([p1,p2])
     return resultado
 }
-export {numeroDadosMuni,numeroDadosMeso,numerosSemelhantes, numerosDadosEstado, dadosBrutosEstado, todosDadosEstado}
+export {tratarDadosInteresse , interessesMuni, numeroDadosMuni,numeroDadosMeso,numerosSemelhantes, numerosDadosEstado, dadosBrutosEstado, todosDadosEstado}

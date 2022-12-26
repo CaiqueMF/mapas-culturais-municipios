@@ -1,5 +1,6 @@
 <script>
     import Comparativo from "./Comparativo.svelte";
+	import Interesses from "./Interesses.svelte";
     import Percentual from "./Percentual.svelte";
 	import { acharSemelhantes } from "./scripts/AcharSemelhantes";
 	import { numeroDadosMuni } from "./scripts/PuxarDados";
@@ -67,8 +68,9 @@
     </div>
     
 </div>
+<Interesses {municipio}/>
 <style>
-    
+   
     .percentualESimilar{
         margin-left: 5px;
     }
