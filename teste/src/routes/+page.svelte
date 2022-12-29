@@ -138,9 +138,7 @@
 </div>
 
 <style>
-*{
-	background-color: burlywood;
-}
+
 div.autocomplete{
 	position: relative;
 	display: inline-block;
@@ -165,6 +163,7 @@ input[type=submit]{
 	color: #fff;
 }
 #autocomplete-items-list {
+	z-index: 99;
 	position: absolute;
 	margin: 0;
 	margin-left: 10px;

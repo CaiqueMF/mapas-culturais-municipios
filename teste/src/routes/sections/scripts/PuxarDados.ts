@@ -46,6 +46,7 @@ async function interessesMuni(municipio:string, tipo : string) {
     }})
     let dados = await p1
     let mapaInteresses = new Map <String,number>() 
+    let total = dados.data.length
     dados.data.forEach((dado: any) =>{
         let atual = dado.terms.area
         atual.forEach((interesseAtual: String) =>{
@@ -58,48 +59,42 @@ async function interessesMuni(municipio:string, tipo : string) {
             }
         })
     })
-    return mapaInteresses
+    return [mapaInteresses,total]
 }
 async function tratarDadosInteresse(lugar :string, tipo: string) {
     let mapa = new Map <String,number>()
+    let total : number
     if(lugar!=="ESTADO"){
-        mapa = await interessesMuni(lugar,tipo)
+        let resultado = await interessesMuni(lugar,tipo)
+        mapa = resultado[0]
+        total = resultado[1]
     }else{
         //depois tenho que ver como vou fazer o request pra estado, os testes estão dando errado
     }
     let dados = Array.from(mapa, ([name, value]) => ({ name, value}));
     dados.sort((a,b)=>b.value-a.value)
-    //tamano total pra calculo de perocentagem
-    /* let total = 0
-    dados.forEach(dado=>{
-        total = total + dado.value
-    })
-    let outros = {
-        name: 'Outros (menos de 1%):',
-        value: 0
-    }
-    let quantidade = 0;
+    
+    let destaquesNomes: String[] = []
+    let destaquesValores: string[] = []
+    let outros: { name: String; value: string }[] = []
+
     dados.forEach((dado,index,objeto)=>{
-        if(dado.value/total<0.01){
-            if(quantidade < 5){
-                outros.name=outros.name + "\n -"+dado.name
-                quantidade++
-            }else if(quantidade == 5){
-                outros.name=outros.name+" ..."
-                quantidade++
-            }
-            
-            outros.value=outros.value+dado.value
-            objeto.splice(index,1)
+        let individual = {
+            name: dado.name,
+            value: ((dado.value/total)*100).toFixed(2)
+        }
+        if(individual.name!=="Outros")
+        if(Number(individual.value)>10){
+            destaquesNomes.push(individual.name)
+            destaquesValores.push(individual.value)
+        }else{
+            outros.push(individual)
         }
     })
-    if(quantidade!=0){
-        dados.push(outros)
-    }
- */
+    
     
 
-    return dados
+    return [[destaquesNomes,destaquesValores], outros]
 
 }
 async function numerosDadosEstado(){
